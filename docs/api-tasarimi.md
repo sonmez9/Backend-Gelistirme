@@ -12,6 +12,7 @@
 | Controller | `src/controllers/task.controller.js` | İstek/yanıt yönetimi, HTTP durum kodları |
 | Service | `src/services/task.service.js` | JSON dosyasında okuma/yazma, iş mantığı |
 | Middleware | `src/middlewares/logger.js` | İstek loglama |
+| Middleware | `src/middlewares/validateTask.js` | POST/PUT gövde doğrulaması (isteğe bağlı) |
 
 ## Endpoint Listesi
 
@@ -35,9 +36,13 @@
 |---|---|---|
 | Görev bulunamadı | 404 | `{ "error": "Görev bulunamadı" }` |
 | Bilinmeyen endpoint | 404 | `{ "error": "Endpoint bulunamadı" }` |
-| Zorunlu alan eksik (`title`) | 400 | `{ "error": "title alanı zorunludur" }` |
+| Doğrulama hatası (örn. `title` eksik) | 400 | `{ "error": "title alanı zorunludur" }` |
 | Geçersiz `page`/`limit`/`sort`/`order` veya eksik `keyword` | 400 | `{ "error": "..." }` |
 | Sunucu hatası | 500 | `{ "error": "Sunucu hatası" }` |
+
+## Validation Middleware (isteğe bağlı)
+
+İstek akışında Router ile Controller arasında çalışır: `POST /tasks` ve `PUT /tasks/:id`. Kurallar (`title`, `description`, `priority`, `status`, `assignee`, `projectId`) README'deki doğrulama tablosundadır. Geçersiz veride controller çalışmadan `400` ve açıklayıcı bir `error` mesajı döner. Doğrulama, görevin var olup olmadığı kontrolünden önce yapılır; yani geçersiz gövdeyle olmayan bir id'ye `PUT` yapılırsa `404` yerine `400` döner.
 
 ## Logger Middleware
 
