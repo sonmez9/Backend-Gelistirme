@@ -19,7 +19,7 @@ TaskFlow, bir yazılım şirketinin ekip içindeki görevleri, projeleri ve çal
 - **Öncelik yönetimi:** `low`, `medium`, `high`
 - **Çalışana atama:** `assignee` alanı ile
 - **Logger middleware:** Tüm isteklerin method, endpoint ve zaman damgasıyla kaydı
-- **İleri seviye (isteğe bağlı):** filtreleme, arama, sıralama ve sayfalama; validation middleware
+- **İleri seviye (isteğe bağlı):** filtreleme, arama, sıralama ve sayfalama; validation middleware; raporlama servisleri
 
 ## Kullanılan Teknolojiler
 
