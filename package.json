@@ -8,7 +8,7 @@
     "dev": "nodemon src/server.js"
   },
   "keywords": ["nodejs", "express", "rest-api", "task-management"],
-  "author": "",
+  "author": "İmdat Sönmez",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
