@@ -100,11 +100,30 @@ curl -X POST http://localhost:3000/tasks \
 }
 ```
 
+### Doğrulama (validation middleware)
+
+`POST /tasks` ve `PUT /tasks/:id` istekleri, controller'a ulaşmadan önce [validateTask.js](src/middlewares/validateTask.js) ile denetlenir:
+
+| Alan | Kural |
+|---|---|
+| `title` | Eklemede zorunlu; boş olmayan metin, en fazla 100 karakter |
+| `description` | Metin, en fazla 500 karakter |
+| `priority` | `low`, `medium` veya `high` |
+| `status` | `pending`, `in-progress` veya `completed` |
+| `assignee` | Boş olmayan metin, en fazla 50 karakter (`null` = atamayı kaldır) |
+| `projectId` | Metin veya `null` |
+
+Güncellemede en az bir alan gönderilmelidir. Geçersiz veride `400 Bad Request` ve açıklayıcı mesaj döner; birden çok hata varsa `;` ile birleştirilir:
+
+```json
+{ "error": "title alanı zorunludur; priority şunlardan biri olmalıdır: low, medium, high" }
+```
+
 ### Hata yanıtları
 
 | Kod | Durum |
 |---|---|
-| 400 | `title` eksik/boş veya geçersiz JSON |
+| 400 | Doğrulama hatası, geçersiz sorgu parametresi veya geçersiz JSON |
 | 404 | Görev veya endpoint bulunamadı |
 | 500 | Sunucu hatası |
 
@@ -114,7 +133,7 @@ Her istek `[zaman damgası] METHOD /endpoint` biçiminde konsola ve `logs/reques
 
 ## Postman ile test
 
-[docs/TaskFlow.postman_collection.json](docs/TaskFlow.postman_collection.json) dosyasını Postman'e import edin (Import → dosyayı seçin). Collection içinde 33 istek vardır (CRUD, hata senaryoları, temizlik ve filtreleme/arama/sayfalama). Klasörleri sırayla çalıştırın; görev ekleme istekleri oluşan `id` değerini otomatik kaydeder. Adım adım kullanım için bkz. [docs/postman-rehberi.md](docs/postman-rehberi.md). Test ekran görüntüleri [docs/postman-screenshots/](docs/postman-screenshots/) klasöründedir.
+[docs/TaskFlow.postman_collection.json](docs/TaskFlow.postman_collection.json) dosyasını Postman'e import edin (Import → dosyayı seçin). Collection içinde 43 istek vardır (CRUD, hata senaryoları, temizlik, filtreleme/arama/sayfalama ve validation). Klasörleri sırayla çalıştırın; görev ekleme istekleri oluşan `id` değerini otomatik kaydeder. Adım adım kullanım için bkz. [docs/postman-rehberi.md](docs/postman-rehberi.md). Test ekran görüntüleri [docs/postman-screenshots/](docs/postman-screenshots/) klasöründedir.
 
 ## Proje yapısı
 
@@ -125,7 +144,7 @@ src/
 ├── routes/         # URL → controller eşlemeleri
 ├── controllers/    # İstek/yanıt yönetimi
 ├── services/       # tasks.json okuma/yazma
-├── middlewares/    # Logger
+├── middlewares/    # Logger ve validation
 └── data/           # tasks.json (veri deposu)
 docs/               # Tasarım dokümanları, Postman collection ve ekran görüntüleri
 ```

@@ -4,12 +4,7 @@ const isBlank = (value) => typeof value !== 'string' || value.trim() === '';
 
 exports.createTask = (req, res, next) => {
   try {
-    const body = req.body || {};
-    if (isBlank(body.title)) {
-      return res.status(400).json({ error: 'title alanı zorunludur' });
-    }
-
-    const task = taskService.create({ ...body, title: body.title.trim() });
+    const task = taskService.create(req.body);
     res.status(201).json(task);
   } catch (err) {
     next(err);
@@ -89,12 +84,7 @@ exports.getTaskById = (req, res, next) => {
 
 exports.updateTask = (req, res, next) => {
   try {
-    const body = req.body || {};
-    if (body.title !== undefined && isBlank(body.title)) {
-      return res.status(400).json({ error: 'title alanı boş olamaz' });
-    }
-
-    const task = taskService.update(req.params.id, body);
+    const task = taskService.update(req.params.id, req.body);
     if (!task) return res.status(404).json({ error: 'Görev bulunamadı' });
 
     res.status(200).json(task);
