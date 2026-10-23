@@ -17,7 +17,7 @@ Cevapta ise **durum kodu** (200, 201, 400, 404) ve **JSON gövde** görürsünü
 1. Postman'i [postman.com/downloads](https://www.postman.com/downloads/) adresinden indirip kurun. Hesap açmadan "Skip and go to the app" ile de kullanabilirsiniz.
 2. Terminalde proje klasörüne girip sunucuyu başlatın:
    ```bash
-   cd "/Users/imdatsonmez/Projects/tnc backend/taskflow"
+   cd Backend-Gelistirme
    npm start
    ```
    `TaskFlow API http://localhost:3000 adresinde çalışıyor` yazısını görmelisiniz. Bu terminali **açık bırakın**.
