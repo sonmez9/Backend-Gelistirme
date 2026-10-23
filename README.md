@@ -157,6 +157,18 @@ Her istek `[zaman damgası] METHOD /endpoint` biçiminde konsola ve `logs/reques
 
 [docs/TaskFlow.postman_collection.json](docs/TaskFlow.postman_collection.json) dosyasını Postman'e import edin (Import → dosyayı seçin). Collection içinde 52 istek vardır (CRUD, hata senaryoları, temizlik, filtreleme/arama/sayfalama, validation ve raporlama). Klasörleri sırayla çalıştırın; görev ekleme istekleri oluşan `id` değerini otomatik kaydeder. Adım adım kullanım için bkz. [docs/postman-rehberi.md](docs/postman-rehberi.md). Test ekran görüntüleri [docs/postman-screenshots/](docs/postman-screenshots/) klasöründedir.
 
+## Dokümantasyon
+
+| Doküman | İçerik |
+|---|---|
+| [docs/proje-tanitim.md](docs/proje-tanitim.md) | Amaç, senaryo ve sistem özellikleri |
+| [docs/veri-modeli.md](docs/veri-modeli.md) | Task, User ve Project veri modeli |
+| [docs/api-tasarimi.md](docs/api-tasarimi.md) | Mimari ve endpoint tasarımı |
+| [docs/api-dokumantasyonu.md](docs/api-dokumantasyonu.md) | Her endpoint için açıklama, istek ve yanıt örnekleri |
+| [docs/test-dokumantasyonu.md](docs/test-dokumantasyonu.md) | Yazılı test senaryoları |
+| [docs/kullanim-kilavuzu.md](docs/kullanim-kilavuzu.md) | API'yi uygulamaya entegre etme rehberi |
+| [docs/postman-rehberi.md](docs/postman-rehberi.md) | Postman ile adım adım test |
+
 ## Proje yapısı
 
 ```
