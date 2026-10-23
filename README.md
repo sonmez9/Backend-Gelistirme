@@ -39,7 +39,29 @@ PORT=4000 npm start
 | DELETE | `/tasks/:id` | Görevi siler | 200 |
 | GET | `/tasks/search?keyword=` | Başlık ve açıklamada arama | 200 |
 | GET | `/tasks/assignee/:name` | Çalışana atanmış görevler | 200 |
+| GET | `/reports/completed` | Tamamlanan görev sayısı | 200 |
+| GET | `/reports/pending` | Bekleyen (`pending`) görev sayısı | 200 |
+| GET | `/reports/summary` | Genel sistem özeti | 200 |
 | GET | `/health` | Sunucu sağlık kontrolü | 200 |
+
+### Raporlama
+
+```json
+// GET /reports/completed
+{ "status": "completed", "count": 2 }
+
+// GET /reports/summary
+{
+  "total": 5,
+  "byStatus": { "pending": 2, "in-progress": 1, "completed": 2 },
+  "byPriority": { "low": 2, "medium": 1, "high": 2 },
+  "assigned": 3,
+  "unassigned": 2,
+  "completionRate": 40
+}
+```
+
+`completionRate`, tamamlanan görevlerin toplam içindeki yüzdesidir (görev yoksa `0`). `in-progress` görevler "bekleyen" sayısına dahil edilmez, özette ayrı gösterilir.
 
 ### Filtreleme, sıralama ve sayfalama
 
@@ -133,7 +155,7 @@ Her istek `[zaman damgası] METHOD /endpoint` biçiminde konsola ve `logs/reques
 
 ## Postman ile test
 
-[docs/TaskFlow.postman_collection.json](docs/TaskFlow.postman_collection.json) dosyasını Postman'e import edin (Import → dosyayı seçin). Collection içinde 43 istek vardır (CRUD, hata senaryoları, temizlik, filtreleme/arama/sayfalama ve validation). Klasörleri sırayla çalıştırın; görev ekleme istekleri oluşan `id` değerini otomatik kaydeder. Adım adım kullanım için bkz. [docs/postman-rehberi.md](docs/postman-rehberi.md). Test ekran görüntüleri [docs/postman-screenshots/](docs/postman-screenshots/) klasöründedir.
+[docs/TaskFlow.postman_collection.json](docs/TaskFlow.postman_collection.json) dosyasını Postman'e import edin (Import → dosyayı seçin). Collection içinde 52 istek vardır (CRUD, hata senaryoları, temizlik, filtreleme/arama/sayfalama, validation ve raporlama). Klasörleri sırayla çalıştırın; görev ekleme istekleri oluşan `id` değerini otomatik kaydeder. Adım adım kullanım için bkz. [docs/postman-rehberi.md](docs/postman-rehberi.md). Test ekran görüntüleri [docs/postman-screenshots/](docs/postman-screenshots/) klasöründedir.
 
 ## Proje yapısı
 
@@ -141,7 +163,7 @@ Her istek `[zaman damgası] METHOD /endpoint` biçiminde konsola ve `logs/reques
 src/
 ├── app.js          # Express uygulaması, middleware ve route kaydı
 ├── server.js       # Sunucuyu başlatır
-├── routes/         # URL → controller eşlemeleri
+├── routes/         # URL → controller eşlemeleri (task, report)
 ├── controllers/    # İstek/yanıt yönetimi
 ├── services/       # tasks.json okuma/yazma
 ├── middlewares/    # Logger ve validation

@@ -11,6 +11,7 @@
 | Route | `src/routes/task.routes.js` | URL → controller eşlemesi |
 | Controller | `src/controllers/task.controller.js` | İstek/yanıt yönetimi, HTTP durum kodları |
 | Service | `src/services/task.service.js` | JSON dosyasında okuma/yazma, iş mantığı |
+| Raporlama | `routes/report.routes.js`, `controllers/report.controller.js`, `services/report.service.js` | Görevler üzerinde sayma ve özetleme (yalnızca okur) |
 | Middleware | `src/middlewares/logger.js` | İstek loglama |
 | Middleware | `src/middlewares/validateTask.js` | POST/PUT gövde doğrulaması (isteğe bağlı) |
 
@@ -26,6 +27,9 @@
 | GET | `/tasks?status=&priority=&assignee=&sort=&order=&page=&limit=` | Filtreleme, sıralama, sayfalama (isteğe bağlı) | 200 OK |
 | GET | `/tasks/search?keyword=` | Başlık ve açıklamada arama (isteğe bağlı) | 200 OK |
 | GET | `/tasks/assignee/:name` | Çalışana göre listeleme (isteğe bağlı) | 200 OK |
+| GET | `/reports/completed` | Tamamlanan görev sayısı (isteğe bağlı) | 200 OK |
+| GET | `/reports/pending` | Bekleyen görev sayısı (isteğe bağlı) | 200 OK |
+| GET | `/reports/summary` | Durum, öncelik ve atama özeti (isteğe bağlı) | 200 OK |
 | GET | `/health` | Sunucu sağlık kontrolü | 200 OK |
 
 `/tasks/search` ve `/tasks/assignee/:name` yolları, `/tasks/:id` ile çakışmaması için route dosyasında `/:id` tanımından önce yer alır.

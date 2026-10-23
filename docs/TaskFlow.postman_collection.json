@@ -32,6 +32,18 @@
     {
       "key": "validId",
       "value": ""
+    },
+    {
+      "key": "reportId1",
+      "value": ""
+    },
+    {
+      "key": "reportId2",
+      "value": ""
+    },
+    {
+      "key": "reportId3",
+      "value": ""
     }
   ],
   "item": [
@@ -1512,6 +1524,296 @@
               "path": [
                 "tasks",
                 "{{validId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "F - İleri Seviye: Raporlama (İsteğe Bağlı)",
+      "item": [
+        {
+          "name": "Hazırlık 1: tamamlanmış görev ekle",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('reportId1', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Rapor testi 1\",\n  \"priority\": \"high\",\n  \"assignee\": \"musa\",\n  \"status\": \"completed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hazırlık 2: bekleyen görev ekle",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('reportId2', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Rapor testi 2\",\n  \"priority\": \"low\",\n  \"assignee\": \"ayse\",\n  \"status\": \"pending\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hazırlık 3: devam eden, atanmamış görev ekle",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('reportId3', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Rapor testi 3\",\n  \"priority\": \"medium\",\n  \"status\": \"in-progress\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Tamamlanan görev sayısı (GET /reports/completed)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));",
+                  "pm.test('count en az 1', () => pm.expect(pm.response.json().count).to.be.at.least(1));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/completed",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "completed"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Bekleyen görev sayısı (GET /reports/pending)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));",
+                  "pm.test('count en az 1', () => pm.expect(pm.response.json().count).to.be.at.least(1));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/pending",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "pending"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Genel sistem özeti (GET /reports/summary)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));",
+                  "const s = pm.response.json(); const sum = o => Object.values(o).reduce((a, b) => a + b, 0);",
+                  "pm.test('byStatus toplamı total ile eşit', () => pm.expect(sum(s.byStatus)).to.eql(s.total));",
+                  "pm.test('byPriority toplamı total ile eşit', () => pm.expect(sum(s.byPriority)).to.eql(s.total));",
+                  "pm.test('assigned + unassigned = total', () => pm.expect(s.assigned + s.unassigned).to.eql(s.total));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/summary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "summary"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Temizlik 1 (DELETE /tasks/:id)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/{{reportId1}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks",
+                "{{reportId1}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Temizlik 2 (DELETE /tasks/:id)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/{{reportId2}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks",
+                "{{reportId2}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Temizlik 3 (DELETE /tasks/:id)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/{{reportId3}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks",
+                "{{reportId3}}"
               ]
             }
           }
