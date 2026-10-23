@@ -10,7 +10,7 @@ Node.js ve Express ile geliştirilmiş, REST mantığında bir görev yönetim A
 ## Kurulum
 
 ```bash
-git clone <repo-adresi>
+git clone https://github.com/sonmez9/Backend-Gelistirme.git
 cd Backend-Gelistirme
 npm install
 ```
