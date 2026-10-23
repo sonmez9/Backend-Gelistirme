@@ -67,6 +67,9 @@ Her görüntüde **method, URL, body (varsa), durum kodu ve cevap JSON'u** birli
 | `05-put-guncelle-status.png`, `06-put-guncelle-coklu-alan.png` | 5 ve 6 - Güncelle | 200 OK |
 | `07-delete-gorev-sil.png` | 7 - Görev sil | 200 OK |
 | `08` – `15` (`hata-400-*`, `hata-404-*`) | B klasörü: hata senaryoları | 400 / 404 |
+| `18` – `33` (`d-*`) | D klasörü: filtreleme, arama, sayfalama, sıralama | 200 / 400 |
+| `34` – `43` (`e-*`) | E klasörü: validation | 400 |
+| `44` – `52` (`f-*`) | F klasörü: raporlama | 200 |
 
 Repodaki görüntüler bu adlandırmayla [postman-screenshots/](postman-screenshots/) klasöründedir.
 

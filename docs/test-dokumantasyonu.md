@@ -90,9 +90,8 @@ Veri yokken üç endpoint de 200 döner; sayılar 0, `completionRate` 0'dır.
 
 ## Sonuçlar
 
-- **Zorunlu senaryolar (0, A, B, C):** Postman'de çalıştırılmıştır; ekran görüntüleri [postman-screenshots/](postman-screenshots/) klasöründedir.
-- **Tüm klasörler:** Collection'daki her isteğin beklenen durum kodunu döndürdüğü, sunucuya sırayla gönderilen isteklerle de doğrulanmıştır (52/52).
-- Postman içindeki gövde testleri (`pm.test`) Postman'de **Test Results** sekmesinde görülür.
+- **Tüm klasörler (0, A–F):** Postman'de çalıştırılmış, tüm istekler beklenen durum kodunu döndürmüş ve **Test Results** sekmesindeki gövde testleri (`pm.test`) geçmiştir. Ekran görüntüleri [postman-screenshots/](postman-screenshots/) klasöründedir (`00`–`17` zorunlu senaryolar, `18`–`52` isteğe bağlı D, E, F klasörleri).
+- Collection'daki 52 isteğin beklenen durum kodunu döndürdüğü, sunucuya sırayla gönderilen isteklerle ayrıca doğrulanmıştır.
 
 ## Test verisi hakkında
 
