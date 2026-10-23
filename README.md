@@ -37,7 +37,33 @@ PORT=4000 npm start
 | GET | `/tasks/:id` | Görev detayını getirir | 200 |
 | PUT | `/tasks/:id` | Görevi günceller | 200 |
 | DELETE | `/tasks/:id` | Görevi siler | 200 |
+| GET | `/tasks/search?keyword=` | Başlık ve açıklamada arama | 200 |
+| GET | `/tasks/assignee/:name` | Çalışana atanmış görevler | 200 |
 | GET | `/health` | Sunucu sağlık kontrolü | 200 |
+
+### Filtreleme, sıralama ve sayfalama
+
+`GET /tasks` aşağıdaki sorgu parametrelerini destekler (hepsi isteğe bağlı, birlikte kullanılabilir):
+
+| Parametre | Örnek | Açıklama |
+|---|---|---|
+| `status` | `/tasks?status=completed` | Duruma göre filtre |
+| `priority` | `/tasks?priority=high` | Önceliğe göre filtre |
+| `assignee` | `/tasks?assignee=musa` | Çalışana göre filtre (büyük/küçük harf duyarsız) |
+| `sort` | `/tasks?sort=createdAt` | `createdAt`, `updatedAt` veya `title` |
+| `order` | `/tasks?sort=title&order=desc` | `asc` (varsayılan) veya `desc` |
+| `page`, `limit` | `/tasks?page=1&limit=10` | Sayfalama (`limit` varsayılanı 10) |
+
+`page` veya `limit` verilmezse yanıt düz bir dizidir. Verilirse yanıt şu biçimdedir:
+
+```json
+{
+  "data": [ ],
+  "pagination": { "page": 1, "limit": 10, "total": 25, "totalPages": 3 }
+}
+```
+
+Geçersiz `page`/`limit`/`sort`/`order` değerleri ve eksik `keyword` için `400` döner.
 
 ### Görev alanları
 
@@ -88,7 +114,7 @@ Her istek `[zaman damgası] METHOD /endpoint` biçiminde konsola ve `logs/reques
 
 ## Postman ile test
 
-[docs/TaskFlow.postman_collection.json](docs/TaskFlow.postman_collection.json) dosyasını Postman'e import edin (Import → dosyayı seçin). Collection içinde 17 istek vardır (CRUD, hata senaryoları, temizlik). Klasörleri sırayla çalıştırın; görev ekleme istekleri oluşan `id` değerini otomatik kaydeder. Adım adım kullanım için bkz. [docs/postman-rehberi.md](docs/postman-rehberi.md). Test ekran görüntüleri [docs/postman-screenshots/](docs/postman-screenshots/) klasöründedir.
+[docs/TaskFlow.postman_collection.json](docs/TaskFlow.postman_collection.json) dosyasını Postman'e import edin (Import → dosyayı seçin). Collection içinde 33 istek vardır (CRUD, hata senaryoları, temizlik ve filtreleme/arama/sayfalama). Klasörleri sırayla çalıştırın; görev ekleme istekleri oluşan `id` değerini otomatik kaydeder. Adım adım kullanım için bkz. [docs/postman-rehberi.md](docs/postman-rehberi.md). Test ekran görüntüleri [docs/postman-screenshots/](docs/postman-screenshots/) klasöründedir.
 
 ## Proje yapısı
 

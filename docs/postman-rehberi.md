@@ -26,11 +26,12 @@ Cevapta ise **durum kodu** (200, 201, 400, 404) ve **JSON gövde** görürsünü
 
 1. Postman'de sol üstteki **Import** düğmesine tıklayın.
 2. [TaskFlow.postman_collection.json](TaskFlow.postman_collection.json) dosyasını pencereye sürükleyin.
-3. Soldaki **Collections** listesinde **TaskFlow API** görünür. Tıklayınca 4 klasör açılır:
+3. Soldaki **Collections** listesinde **TaskFlow API** görünür. Tıklayınca 5 klasör açılır:
    - **0 - Sunucu Kontrolü**: sunucu ayakta mı?
    - **A - Başarılı Senaryolar (CRUD)**: 7 istek, zorunlu testler.
    - **B - Hata Senaryoları**: 8 istek, hatalı isteklere API'nin verdiği cevaplar.
    - **C - Temizlik**: test verisini siler.
+   - **D - İleri Seviye (İsteğe Bağlı)**: kendi test görevlerini ekler, filtreleme, arama, sayfalama ve sıralamayı dener, sonra hepsini siler.
 
 ## 3. Tek tek istek göndermek (ekran görüntüsü için önerilen yol)
 
@@ -48,7 +49,7 @@ Cevapta ise **durum kodu** (200, 201, 400, 404) ve **JSON gövde** görürsünü
 
 1. **TaskFlow API** collection'ının üzerine gelip `...` menüsünden **Run collection**'ı seçin (veya collection'a tıklayıp sağdaki **Run** düğmesine basın).
 2. **Run TaskFlow API** düğmesine tıklayın.
-3. Tüm istekler sırayla çalışır. Ekranda her isteğin geçen/kalan testleri listelenir. Hepsi yeşil olmalıdır (toplam 17 istek).
+3. Tüm istekler sırayla çalışır. Ekranda her isteğin geçen/kalan testleri listelenir. Hepsi yeşil olmalıdır (toplam 33 istek).
 
 Bu ekranın görüntüsü, "tüm testler geçti" kanıtı olarak çok işe yarar.
 

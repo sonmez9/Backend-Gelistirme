@@ -22,7 +22,12 @@
 | GET | `/tasks/:id` | Tek görevin detayı | 200 OK |
 | PUT | `/tasks/:id` | Görevi günceller | 200 OK |
 | DELETE | `/tasks/:id` | Görevi siler | 200 OK |
+| GET | `/tasks?status=&priority=&assignee=&sort=&order=&page=&limit=` | Filtreleme, sıralama, sayfalama (isteğe bağlı) | 200 OK |
+| GET | `/tasks/search?keyword=` | Başlık ve açıklamada arama (isteğe bağlı) | 200 OK |
+| GET | `/tasks/assignee/:name` | Çalışana göre listeleme (isteğe bağlı) | 200 OK |
 | GET | `/health` | Sunucu sağlık kontrolü | 200 OK |
+
+`/tasks/search` ve `/tasks/assignee/:name` yolları, `/tasks/:id` ile çakışmaması için route dosyasında `/:id` tanımından önce yer alır.
 
 ## Hata Yanıtları
 
@@ -31,6 +36,7 @@
 | Görev bulunamadı | 404 | `{ "error": "Görev bulunamadı" }` |
 | Bilinmeyen endpoint | 404 | `{ "error": "Endpoint bulunamadı" }` |
 | Zorunlu alan eksik (`title`) | 400 | `{ "error": "title alanı zorunludur" }` |
+| Geçersiz `page`/`limit`/`sort`/`order` veya eksik `keyword` | 400 | `{ "error": "..." }` |
 | Sunucu hatası | 500 | `{ "error": "Sunucu hatası" }` |
 
 ## Logger Middleware

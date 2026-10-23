@@ -16,6 +16,18 @@
     {
       "key": "taskId2",
       "value": ""
+    },
+    {
+      "key": "seedId1",
+      "value": ""
+    },
+    {
+      "key": "seedId2",
+      "value": ""
+    },
+    {
+      "key": "seedId3",
+      "value": ""
     }
   ],
   "item": [
@@ -583,6 +595,551 @@
               "path": [
                 "tasks",
                 "{{taskId2}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "D - İleri Seviye: Filtreleme, Arama, Sayfalama (İsteğe Bağlı)",
+      "item": [
+        {
+          "name": "Hazırlık 1: görev ekle (musa, high, completed)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('seedId1', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Backend kur\",\n  \"description\": \"Express projesi\",\n  \"priority\": \"high\",\n  \"assignee\": \"musa\",\n  \"status\": \"completed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hazırlık 2: görev ekle (ayse, low, pending)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('seedId2', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Frontend tasarla\",\n  \"priority\": \"low\",\n  \"assignee\": \"ayse\",\n  \"status\": \"pending\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hazırlık 3: görev ekle (musa, high, in-progress)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('seedId3', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"API test et\",\n  \"description\": \"backend testleri\",\n  \"priority\": \"high\",\n  \"assignee\": \"musa\",\n  \"status\": \"in-progress\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Duruma göre filtrele (GET /tasks?status=completed)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));",
+                  "pm.test('dizi döner', () => pm.expect(pm.response.json()).to.be.an('array'));",
+                  "pm.test('hepsi completed', () => pm.response.json().forEach(t => pm.expect(t.status).to.eql('completed')));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks?status=completed",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "completed"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Önceliğe göre filtrele (GET /tasks?priority=high)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));",
+                  "pm.test('dizi döner', () => pm.expect(pm.response.json()).to.be.an('array'));",
+                  "pm.test('hepsi high', () => pm.response.json().forEach(t => pm.expect(t.priority).to.eql('high')));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks?priority=high",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ],
+              "query": [
+                {
+                  "key": "priority",
+                  "value": "high"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Görev ara (GET /tasks/search?keyword=backend)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));",
+                  "pm.test('dizi döner', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/search?keyword=backend",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "backend"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Kullanıcıya göre listele (GET /tasks/assignee/musa)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));",
+                  "pm.test('dizi döner', () => pm.expect(pm.response.json()).to.be.an('array'));",
+                  "pm.test('hepsi musa', () => pm.response.json().forEach(t => pm.expect(t.assignee).to.eql('musa')));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/assignee/musa",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks",
+                "assignee",
+                "musa"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sayfalama (GET /tasks?page=1&limit=2)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));",
+                  "pm.test('en fazla 2 kayıt', () => pm.expect(pm.response.json().data.length).to.be.at.most(2));",
+                  "pm.test('pagination bilgisi var', () => pm.expect(pm.response.json().pagination).to.have.property('totalPages'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks?page=1&limit=2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "2"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sıralama (GET /tasks?sort=createdAt)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));",
+                  "pm.test('dizi döner', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks?sort=createdAt",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "createdAt"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ters sıralama (GET /tasks?sort=title&order=desc)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));",
+                  "pm.test('dizi döner', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks?sort=title&order=desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "title"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hata: keyword yok (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/search",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks",
+                "search"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hata: geçersiz limit (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks?page=1&limit=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "0"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hata: geçersiz sort alanı (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks?sort=priority",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "priority"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Temizlik 1 (DELETE /tasks/:id)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/{{seedId1}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks",
+                "{{seedId1}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Temizlik 2 (DELETE /tasks/:id)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/{{seedId2}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks",
+                "{{seedId2}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Temizlik 3 (DELETE /tasks/:id)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Durum kodu 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/{{seedId3}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks",
+                "{{seedId3}}"
               ]
             }
           }

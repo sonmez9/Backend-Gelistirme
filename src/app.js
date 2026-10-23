@@ -16,6 +16,8 @@ app.get('/', (req, res) => {
       'GET    /tasks/:id',
       'PUT    /tasks/:id',
       'DELETE /tasks/:id',
+      'GET    /tasks/search?keyword=',
+      'GET    /tasks/assignee/:name',
       'GET    /health',
     ],
   });
