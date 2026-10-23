@@ -15,6 +15,42 @@ const writeTasks = (tasks) => {
 
 const getAll = () => readTasks();
 
+const SORTABLE_FIELDS = ['createdAt', 'updatedAt', 'title'];
+
+const sameText = (a, b) => (a || '').toLowerCase() === b.toLowerCase();
+
+// Filtreleme, arama ve sıralama; sayfalama ayrıca paginate ile yapılır.
+const list = ({ status, priority, assignee, keyword, sort, order = 'asc' } = {}) => {
+  let tasks = readTasks();
+
+  if (status) tasks = tasks.filter((task) => task.status === status);
+  if (priority) tasks = tasks.filter((task) => task.priority === priority);
+  if (assignee) tasks = tasks.filter((task) => sameText(task.assignee, assignee));
+  if (keyword) {
+    const term = keyword.toLowerCase();
+    tasks = tasks.filter((task) =>
+      `${task.title} ${task.description}`.toLowerCase().includes(term)
+    );
+  }
+
+  if (sort) {
+    const direction = order === 'desc' ? -1 : 1;
+    tasks.sort((a, b) => String(a[sort]).localeCompare(String(b[sort])) * direction);
+  }
+
+  return tasks;
+};
+
+const paginate = (items, page, limit) => {
+  const total = items.length;
+  const start = (page - 1) * limit;
+
+  return {
+    data: items.slice(start, start + limit),
+    pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+  };
+};
+
 const getById = (id) => readTasks().find((task) => task.id === id);
 
 const create = ({ title, description, status, priority, assignee, projectId }) => {
@@ -63,4 +99,4 @@ const remove = (id) => {
   return true;
 };
 
-module.exports = { getAll, getById, create, update, remove };
+module.exports = { getAll, list, paginate, SORTABLE_FIELDS, getById, create, update, remove };
